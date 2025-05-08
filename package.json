@@ -1,0 +1,17 @@
+
+  {
+    "name": "sira-qemir",
+    "version": "1.0.0",
+    "description": "Sira Qemir MERN to-do app with Amharic support",
+    "scripts": {
+      "start:server": "cd server && npm start",
+      "dev:server": "cd server && npm run dev",
+      "start:client": "cd client && npm start",
+      "dev:client": "cd client && npm run dev",
+      "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
+      "install:all": "npm install && cd client && npm install && cd ../server && npm install"
+    },
+  "dependencies": {
+    "concurrently": "^9.1.2"
+  }
+}
