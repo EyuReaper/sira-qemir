@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
-import { SunIcon, MoonIcon } from '@heroicons/react/24/solid';
 
 function Header() {
   const [darkMode, setDarkMode] = useState(false);
@@ -16,18 +15,18 @@ function Header() {
   };
 
   return (
-    <header className="fixed top-0 left-0 z-20 w-full bg-white border-b border-gray-200 dark:bg-gray-900 dark:border-gray-600">
+    <header className="fixed top-0 left-0 z-20 w-full bg-white border-b border-gray-200 dark:bg-gray-900/30 dark:backdrop-blur-md dark:border-gray-500/20 dark:shadow-[0_4px_30px_rgba(0,0,0,0.1)]">
       <div className="w-full py-4 text-center">
-        <h1 className="text-3xl font-extrabold text-gray-900 dark:text-white ">
+        <h1 className="text-3xl font-extrabold text-gray-900 dark:text-white">
           ሥራ ቀምር
         </h1>
       </div>
-      <nav className="max-w-screen-xl px-4 mx-auto place-items-center">
+      <nav className="max-w-screen-xl px-4 mx-auto place-items-center dark:bg-gray-900/30 dark:backdrop-blur-md dark:border-gray-500/20 dark:rounded-lg">
         <div className="flex flex-wrap items-center justify-between">
           <div className="flex space-x-3 md:order-2">
-             <button
+            <button
               onClick={toggleMenu}
-              className="inline-flex items-center w-10 h-10 p-2 text-sm text-gray-500 rounded-lg place-item-end md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+              className="inline-flex items-center justify-center w-10 h-10 p-2 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
               aria-controls="navbar-sticky"
               aria-expanded={menuOpen}
             >
@@ -71,29 +70,6 @@ function Header() {
                 </span>
               </span>
             </label>
-            <button
-              onClick={toggleMenu}
-              className="inline-flex items-center justify-center w-10 h-10 p-2 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
-              aria-controls="navbar-sticky"
-              aria-expanded={menuOpen}
-            >
-              <span className="sr-only">Open main menu</span>
-              <svg
-                className="w-5 h-5"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 17 14"
-              >
-                <path
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M1 1h15M1 7h15M1 13h15"
-                />
-              </svg>
-            </button>
           </div>
           <div
             className={`items-center justify-between w-full md:flex md:w-auto md:order-1 ${
@@ -101,14 +77,14 @@ function Header() {
             }`}
             id="navbar-sticky"
           >
-            <ul className="flex flex-col p-4 mt-4 font-medium border border-gray-100 rounded-lg md:p-0 bg-gray-50 md:space-x-8 md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+            <ul className="flex flex-col p-4 mt-4 font-medium border border-gray-100 rounded-lg md:p-0 bg-gray-50 md:space-x-8 md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-gray-800/30 dark:backdrop-blur-md dark:border-gray-500/20 md:dark:bg-gray-900/30">
               <li>
                 <Link
                   to="/"
                   className="block px-3 py-2 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
                   onClick={() => setMenuOpen(false)}
                 >
-                  መነሻ
+                  መነህ
                 </Link>
               </li>
               <li>

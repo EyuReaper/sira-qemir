@@ -11,12 +11,12 @@ function AuthForm({ type }) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="max-w-md mx-auto bg-white p-6 rounded shadow-md">
-      <h2 className="text-2xl font-bold mb-4">
+    <form onSubmit={handleSubmit} className="max-w-md p-6 mx-auto bg-white rounded shadow-md">
+      <h2 className="mb-4 text-2xl font-bold">
         {type === 'login' ? 'መግባት' : 'መመዝገብ'}
       </h2>
       <div className="mb-4">
-        <label className="block text-gray-700">ኢሜይል</label>
+        <label className="block text-gray-900 dark:text-white">ኢሜይል</label>
         <input
           type="email"
           value={email}
@@ -26,7 +26,7 @@ function AuthForm({ type }) {
         />
       </div>
       <div className="mb-4">
-        <label className="block text-gray-700">የይለፍ ቃል</label>
+        <label className="block text-gray-900 dark:text-white">የይለፍ ቃል</label>
         <input
           type="password"
           value={password}
@@ -37,7 +37,7 @@ function AuthForm({ type }) {
       </div>
       <button
         type="submit"
-        className="w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700"
+        className="w-full p-2 text-white bg-blue-600 rounded hover:bg-blue-700"
       >
         {type === 'login' ? 'መግባት' : 'መመዝገብ'}
       </button>
