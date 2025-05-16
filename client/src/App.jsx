@@ -1,12 +1,26 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
+import { useState } from 'react';
 import Header from './components/Header';
+import TaskForm from './components/TaskForm';
+import TaskList from './components/TaskList';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Tasks from './pages/Tasks';
 
 function App() {
+  const [tasks, setTasks] = useState([]);
+
+  const handleTaskSubmit = (task) => {
+    setTasks([...tasks, { ...task, status: 'pending' }]);
+    console.log('New task:', task);
+  };
+
+  const handleTaskDelete = (index) => {
+    setTasks(tasks.filter((_, i) => i !== index));
+  };
+
   return (
     <AuthProvider>
       <Router>
@@ -17,7 +31,7 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
-              <Route path="/tasks" element={<Tasks />} />
+              <Route path="/tasks" element={<Tasks onSubmit={handleTaskSubmit} tasks={tasks} onDelete={handleTaskDelete} />} />
             </Routes>
           </main>
         </div>
