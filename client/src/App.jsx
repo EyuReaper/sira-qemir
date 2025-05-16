@@ -10,9 +10,9 @@ function App() {
   return (
     <AuthProvider>
       <Router>
-        <div className="min-h-screen transition-colors duration-300 bg-gray-50 dark:bg-gray-900">
+        <div className="min-h-screen transition-colors duration-500 bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-950 dark:to-gray-900">
           <Header />
-          <main className="container px-4 py-8 mx-auto">
+          <main className="container px-6 py-12 mx-auto max-w-7xl">
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/login" element={<Login />} />

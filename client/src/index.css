@@ -4,10 +4,26 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --light-bg: #F5F5F5;
+  --light-pattern-1: #BFDBFE;
+  --light-pattern-2: #E5E7EB;
+  --dark-bg: #1F2937;
+  --dark-pattern-1: #22D3EE;
+  --dark-pattern-2: #FBBF24;
+}
 body {
-  font-family: 'Noto Sans Ethiopic', 'Inter', sans-serif;
+  font-family: 'Noto Sans Ethiopic', sans-serif;
+  background-color: var(--light-bg) !important;
+  background-image: url('/client/public/assets/patternpad-light.svg') !important;
+  background-size: 40px 40px;
 }
 
+.dark body {
+  background-color: var(--dark-bg) !important;
+  background-image: url('/client/public/assets/patternpad-dark.svg') !important;
+  background-size: 40px 40px;
+}
 .dark {
   background-color: #1a202c;
   color: #e2e8f0;
