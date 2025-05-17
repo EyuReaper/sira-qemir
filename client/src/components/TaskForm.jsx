@@ -30,9 +30,13 @@ function TaskForm({ onSubmit }) {
       setErrors(newErrors);
       return;
     }
-    onSubmit(formData);
-    setFormData({ title: '', description: '', dueDate: '', priority: 'medium' });
-    setErrors({});
+    if (typeof onSubmit === 'function') {
+      onSubmit(formData);
+      setFormData({ title: '', description: '', dueDate: '', priority: 'medium' });
+      setErrors({});
+    } else {
+      console.error('onSubmit is not a function');
+    }
   };
 
   const handleChange = (field) => (e) => {
