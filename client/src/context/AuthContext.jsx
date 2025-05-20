@@ -1,8 +1,8 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import { createClient } from '@supabase/supabase-js';
 
-const SUPABASE_URL = 'https://zguyufacmsuqagkubjgn.supabase.co'; 
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpndXl1ZmFjbXN1cWFna3ViamduIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY4MTY3NDMsImV4cCI6MjA2MjM5Mjc0M30.jBrYaASfzdA7vU7nLEyqLphwnBHt_s8uRsqk0a9_Ljs'; 
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
+const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 const AuthContext = createContext();
@@ -61,6 +61,5 @@ export function useAuth() {
   }
   return context;
 }
-
 
 export { supabase };
