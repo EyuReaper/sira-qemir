@@ -5,6 +5,9 @@ import { useAuth } from '../context/AuthContext';
 function Header() {
   const [darkMode, setDarkMode] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
 
   const toggleDarkMode = () => {
     setDarkMode(!darkMode);
@@ -13,6 +16,23 @@ function Header() {
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
+    setDropdownOpen(false);
+  };
+
+  const toggleDropdown = () => {
+    setDropdownOpen(!dropdownOpen);
+    setMenuOpen(false);
+  };
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+      navigate('/login');
+      setMenuOpen(false);
+      setDropdownOpen(false);
+    } catch (error) {
+      console.error('Logout error:', error);
+    }
   };
 
   return (
@@ -25,6 +45,43 @@ function Header() {
       <nav className="max-w-screen-xl px-4 mx-auto place-items-center dark:bg-gray-900/30 dark:backdrop-blur-md dark:border-gray-500/20 dark:rounded-lg">
         <div className="flex flex-wrap items-center justify-between">
           <div className="flex space-x-3 md:order-2">
+            {user && (
+              <div className="relative">
+                <button
+                  onClick={toggleDropdown}
+                  className="flex items-center justify-center w-10 h-10 text-gray-500 rounded-full hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-600 glow-on-hover"
+                  aria-label="User menu"
+                >
+                  <svg
+                    className="w-6 h-6"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M12 11c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm0 2c-2.761 0-5 2.239-5 5h10c0-2.761-2.239-5-5-5z"
+                    />
+                  </svg>
+                </button>
+                {dropdownOpen && (
+                  <div className="absolute right-0 w-48 mt-2 bg-white rounded-lg shadow-lg dark:bg-gray-800/30 dark:backdrop-blur-md dark:border dark:border-gray-500/20 animate-slide-in">
+                    <div className="px-4 py-2 text-sm text-gray-700 dark:text-gray-300">
+                      {user.email}
+                    </div>
+                    <button
+                      onClick={handleLogout}
+                      className="block w-full px-4 py-2 text-sm text-left text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-red-400 md:dark:hover:text-red-500"
+                    >
+                      ውጣ
+                    </button>
+                  </div>
+                )}
+              </div>
+            )}
             <button
               onClick={toggleMenu}
               className="inline-flex items-center justify-center w-10 h-10 p-2 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
@@ -88,33 +145,39 @@ function Header() {
                   መነሻ
                 </Link>
               </li>
-              <li>
-                <Link
-                  to="/tasks"
-                  className="block px-3 py-2 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
-                  onClick={() => setMenuOpen(false)}
-                >
-                  ተግባራት
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/login"
-                  className="block px-3 py-2 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
-                  onClick={() => setMenuOpen(false)}
-                >
-                  መግባት
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/register"
-                  className="block px-3 py-2 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
-                  onClick={() => setMenuOpen(false)}
-                >
-                  መመዝገብ
-                </Link>
-              </li>
+              {user && (
+                <li>
+                  <Link
+                    to="/tasks"
+                    className="block px-3 py-2 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    ተግባራት
+                  </Link>
+                </li>
+              )}
+              {!user && (
+                <>
+                  <li>
+                    <Link
+                      to="/login"
+                      className="block px-3 py-2 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
+                      onClick={() => setMenuOpen(false)}
+                    >
+                      መግባት
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      to="/register"
+                      className="block px-3 py-2 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
+                      onClick={() => setMenuOpen(false)}
+                    >
+                      መመዝገብ
+                    </Link>
+                  </li>
+                </>
+              )}
             </ul>
           </div>
         </div>

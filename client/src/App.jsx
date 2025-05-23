@@ -19,16 +19,20 @@ function AppContent() {
 
     // Fetch tasks
     const fetchTasks = async () => {
-      const { data, error } = await supabase
-        .from('tasks')
-        .select('*')
-        .eq('user_id', user.id)
-        .order('created_at', { ascending: false });
-      if (error) {
-        console.error('Error fetching tasks:', error);
-        return;
+      try {
+        const { data, error } = await supabase
+          .from('tasks')
+          .select('*')
+          .eq('user_id', user.id)
+          .order('created_at', { ascending: false });
+        if (error) {
+          console.error('Error fetching tasks:', error);
+          throw error;
+        }
+        setTasks(data || []);
+      } catch (error) {
+        console.error('Fetch tasks failed:', error.message);
       }
-      setTasks(data || []);
     };
 
     fetchTasks();
@@ -40,58 +44,113 @@ function AppContent() {
         'postgres_changes',
         { event: '*', schema: 'public', table: 'tasks', filter: `user_id=eq.${user.id}` },
         (payload) => {
-          if (payload.eventType === 'INSERT') {
-            setTasks((prev) => [payload.new, ...prev]);
-          } else if (payload.eventType === 'UPDATE') {
-            setTasks((prev) =>
-              prev.map((task) => (task.id === payload.new.id ? payload.new : task))
-            );
-          } else if (payload.eventType === 'DELETE') {
-            setTasks((prev) => prev.filter((task) => task.id !== payload.old.id));
+          try {
+            if (payload.eventType === 'INSERT') {
+              setTasks((prev) => [payload.new, ...prev]);
+            } else if (payload.eventType === 'UPDATE') {
+              setTasks((prev) =>
+                prev.map((task) => (task.id === payload.new.id ? payload.new : task))
+              );
+            } else if (payload.eventType === 'DELETE') {
+              setTasks((prev) => prev.filter((task) => task.id !== payload.old.id));
+            }
+          } catch (error) {
+            console.error('Real-time update error:', error);
           }
         }
       )
-      .subscribe();
+      .subscribe((status, error) => {
+        if (error) {
+          console.error('Subscription error:', error);
+        }
+      });
 
     return () => supabase.removeChannel(subscription);
   }, [user, loading]);
 
   const handleTaskSubmit = async (task) => {
-    if (!user) return;
-    const { data, error } = await supabase
-      .from('tasks')
-      .insert([{ ...task, user_id: user.id, status: 'pending' }])
-      .select()
-      .single();
-    if (error) {
-      console.error('Error adding task:', error);
+    if (!user) {
+      console.error('No user authenticated');
       return;
     }
-    console.log('New task:', data);
+
+    // Validate and map task fields
+    const taskData = {
+      title: task.title?.trim(),
+      description: task.description?.trim() || null,
+      due_date: task.dueDate || null, // Map dueDate to due_date
+      priority: ['low', 'medium', 'high'].includes(task.priority) ? task.priority : 'low',
+      user_id: user.id,
+      status: 'pending',
+    };
+
+    if (!taskData.title) {
+      console.error('Task title is required');
+      return;
+    }
+
+    console.log('Submitting task:', taskData);
+
+    try {
+      const { data, error } = await supabase
+        .from('tasks')
+        .insert([taskData])
+        .select()
+        .single();
+      if (error) {
+        console.error('Error adding task:', error);
+        throw error;
+      }
+      console.log('New task:', data);
+    } catch (error) {
+      console.error('Add task failed:', error.message);
+    }
   };
 
   const handleTaskDelete = async (index) => {
     const taskId = tasks[index].id;
-    const { error } = await supabase.from('tasks').delete().eq('id', taskId);
-    if (error) {
-      console.error('Error deleting task:', error);
-      return;
+    try {
+      const { error } = await supabase.from('tasks').delete().eq('id', taskId);
+      if (error) {
+        console.error('Error deleting task:', error);
+        throw error;
+      }
+    } catch (error) {
+      console.error('Delete task failed:', error.message);
     }
   };
 
   const handleTaskEdit = async (index, updatedTask) => {
     const taskId = tasks[index].id;
-    const { data, error } = await supabase
-      .from('tasks')
-      .update({ ...updatedTask, updated_at: new Date().toISOString() })
-      .eq('id', taskId)
-      .select()
-      .single();
-    if (error) {
-      console.error('Error updating task:', error);
+    const updatedTaskData = {
+      title: updatedTask.title?.trim(),
+      description: updatedTask.description?.trim() || null,
+      due_date: updatedTask.dueDate || null, // Map dueDate to due_date
+      priority: ['low', 'medium', 'high'].includes(updatedTask.priority) ? updatedTask.priority : 'low',
+      status: ['pending', 'completed'].includes(updatedTask.status) ? updatedTask.status : 'pending',
+      updated_at: new Date().toISOString(),
+    };
+
+    if (!updatedTaskData.title) {
+      console.error('Task title is required');
       return;
     }
-    console.log('Edited task:', data);
+
+    try {
+      const { data, error } = await supabase
+        .from('tasks')
+        .update(updatedTaskData)
+        .eq('id', taskId)
+        .select()
+        .single();
+      if (error) {
+        console.error('Error updating task:', error);
+        throw error;
+      }
+      console.log('Edited task:', data);
+    } catch (error) {
+      console.error('Update task failed:', error.message);
+    }
   };
 
   if (loading) {
