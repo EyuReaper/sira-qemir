@@ -2,6 +2,15 @@
 
 Sira Qemir (ሥራ ቀምር) is a modern task management web application built with React, Supabase, and Tailwind CSS. It features a glassmorphic UI, Amharic text, and a seamless user experience for managing tasks. Users must log in or register to access task functionality, with a focus on intuitive design and real-time task updates.
 
+# Preview
+
+![Preview Screenshot 1](/client/public/assets/screencapture-landing-siraqemir.png).
+![Preview Screenshot 2](/client/public/assets/screencapture-taskform-siraqemir.png).
+![Preview Screenshot 3](/client/public/assets/screencapture-taskforminaction-siraqemir.png).
+![Preview Screenshot 4](/client/public/assets/screencapture-darkmod-siraqemir.png).
+![Preview Screenshot 5](/client/public/assets/screencapture-login-siraqemir.png).
+
+
 ## Features
 
 - **Authentication**: Secure login and registration using Supabase Auth (email/password).
