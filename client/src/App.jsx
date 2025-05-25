@@ -78,7 +78,7 @@ function AppContent() {
     const taskData = {
       title: task.title?.trim(),
       description: task.description?.trim() || null,
-      due_date: task.dueDate || null, // Map dueDate to due_date
+      due_date: task.dueDate || null,
       priority: ['low', 'medium', 'high'].includes(task.priority) ? task.priority : 'low',
       user_id: user.id,
       status: 'pending',
@@ -90,8 +90,16 @@ function AppContent() {
     }
 
     console.log('Submitting task:', taskData);
+    console.log('User ID:', user.id);
 
     try {
+      const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
+      if (sessionError || !sessionData.session) {
+        console.error('No valid session:', sessionError);
+        return;
+      }
+      console.log('Session token:', sessionData.session.access_token);
+
       const { data, error } = await supabase
         .from('tasks')
         .insert([taskData])
@@ -125,7 +133,7 @@ function AppContent() {
     const updatedTaskData = {
       title: updatedTask.title?.trim(),
       description: updatedTask.description?.trim() || null,
-      due_date: updatedTask.dueDate || null, // Map dueDate to due_date
+      due_date: updatedTask.dueDate || null,
       priority: ['low', 'medium', 'high'].includes(updatedTask.priority) ? updatedTask.priority : 'low',
       status: ['pending', 'completed'].includes(updatedTask.status) ? updatedTask.status : 'pending',
       updated_at: new Date().toISOString(),
