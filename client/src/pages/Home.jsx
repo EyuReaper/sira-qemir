@@ -60,8 +60,8 @@ function Home() {
         className="flex items-center justify-center min-h-screen overflow-hidden bg-gray-100 dark:bg-gray-900"
       >
         <div className="text-center">
-          <h1 className="mb-4 text-4xl font-semibold text-gray-900 dark:text-gray-100">እንኳን ወደ <span className='text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-green-500'>ሥራቀምር </span>የተግባርየተግባር መተግበሪያ በሰላም መጡ!</h1>
-          <p className="mb-6 text-gray-600 dark:text-gray-400">ተግባራቶቾን በቀላሉ ያደራጁ፣ ይቆጣጠሩ እና ይከታተሉይከታተሉ።</p>
+          <h1 className="mb-4 text-4xl font-semibold text-gray-900 dark:text-gray-100">እንኳን ወደ <span className='text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-green-500'>ሥራቀምር </span>የተግባር መተግበሪያ በሰላም መጡ!</h1>
+          <p className="mb-6 text-gray-600 dark:text-gray-400">ተግባራቶቾን በቀላሉ ያደራጁ፣ ይቆጣጠሩ እና ይከታተሉ።</p>
           <Link
             to="/login"
             className="inline-block px-6 py-3 text-white transition rounded-md bg-gradient-to-r from-blue-500 to-green-500 hover:from-blue-600 hover:to-green-600"
