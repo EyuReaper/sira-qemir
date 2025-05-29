@@ -170,10 +170,7 @@ function AppContent() {
       <Header />
       <main className="container px-6 py-12 mx-auto max-w-7xl">
         <Routes>
-          <Route
-            path="/"
-            element={user ? <Home /> : <Navigate to="/login" replace />}
-          />
+          <Route path="/" element={<Home />} />
           <Route
             path="/tasks"
             element={user ? <Tasks onSubmit={handleTaskSubmit} tasks={tasks} onDelete={handleTaskDelete} onEdit={handleTaskEdit} /> : <Navigate to="/login" replace />}
