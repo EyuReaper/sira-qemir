@@ -1,7 +1,5 @@
 import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import VANTA from 'vanta';
-import * as THREE from 'three';
 import { ErrorBoundary } from 'react-error-boundary';
 
 function ErrorFallback({ error }) {
@@ -20,11 +18,10 @@ function Home() {
   const vantaEffect = useRef(null);
 
   useEffect(() => {
-    if (!vantaEffect.current && VANTA.CLOUDS) {
+    if (!vantaEffect.current && window.VANTA && window.VANTA.CLOUDS) {
       try {
-        vantaEffect.current = VANTA.CLOUDS({
+        vantaEffect.current = window.VANTA.CLOUDS({
           el: vantaRef.current,
-          THREE,
           mouseControls: true,
           touchControls: true,
           gyroControls: false,
@@ -42,6 +39,8 @@ function Home() {
       } catch (error) {
         console.error('Vanta.js initialization failed:', error);
       }
+    } else {
+      console.error('VANTA.CLOUDS is not available on window.VANTA:', window.VANTA);
     }
 
     return () => {
@@ -57,10 +56,13 @@ function Home() {
     <ErrorBoundary FallbackComponent={ErrorFallback}>
       <div
         ref={vantaRef}
-        className="flex items-center justify-center min-h-screen overflow-hidden bg-gray-100 dark:bg-gray-900"
+        className="flex items-center justify-center w-full min-h-screen overflow-hidden bg-gray-100 dark:bg-gray-900"
+        style={{ position: 'relative', zIndex: 1 }}
       >
-        <div className="text-center">
-          <h1 className="mb-4 text-4xl font-semibold text-gray-900 dark:text-gray-100">እንኳን ወደ <span className='text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-green-500'>ሥራቀምር </span>የተግባር መተግበሪያ በሰላም መጡ!</h1>
+        <div className="relative z-10 text-center">
+          <h1 className="mb-4 text-4xl font-semibold text-gray-900 dark:text-gray-100">
+            እንኳን ወደ <span className='text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-green-500'>ሥራቀምር </span>የተግባር መተግበሪያ በሰላም መጡ!
+          </h1>
           <p className="mb-6 text-gray-600 dark:text-gray-400">ተግባራቶቾን በቀላሉ ያደራጁ፣ ይቆጣጠሩ እና ይከታተሉ።</p>
           <Link
             to="/login"
