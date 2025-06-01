@@ -170,7 +170,11 @@ function AppContent() {
       <Header />
       <main className="container px-6 py-12 mx-auto max-w-7xl">
         <Routes>
-          <Route path="/" element={<Home />} />
+          
+          <Route
+            path="/"
+            element={user ? <Home /> : <Navigate to="/login" replace />}
+          />
           <Route
             path="/tasks"
             element={user ? <Tasks onSubmit={handleTaskSubmit} tasks={tasks} onDelete={handleTaskDelete} onEdit={handleTaskEdit} /> : <Navigate to="/login" replace />}
@@ -185,6 +189,10 @@ function AppContent() {
           />
         </Routes>
       </main>
+           <footer className="w-full p-4 text-center text-gray-700 bg-gray-200 dark:bg-gray-800 dark:text-gray-300">
+            በ ❤️ የተሰራ በ እዩእል ጌታቸው <br />
+            © Eyuel Getachew 2025
+          </footer>
     </div>
   );
 }
