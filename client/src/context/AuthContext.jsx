@@ -5,7 +5,7 @@ const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
 const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
 if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
-  console.error('Error: Supabase URL or Anon Key is missing. Check .env file.');
+  throw new Error('Supabase URL or Anon Key is missing. Check .env file.');
 }
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
@@ -22,12 +22,11 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Check current session
     const fetchSession = async () => {
       try {
         const { data: { session }, error } = await supabase.auth.getSession();
         if (error) {
-          console.error('Error fetching session:', error);
+          console.error('Error fetching session:', error.message, error);
           throw error;
         }
         setUser(session?.user ?? null);
@@ -37,6 +36,7 @@ export function AuthProvider({ children }) {
         }
       } catch (error) {
         console.error('Session fetch failed:', error.message);
+        setUser(null); // Clear user on error
       } finally {
         setLoading(false);
       }
@@ -44,52 +44,55 @@ export function AuthProvider({ children }) {
 
     fetchSession();
 
-    // Listen for auth changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+    const { data: authListener } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null);
       console.log('Auth state changed:', session);
       if (session?.access_token) {
         console.log('JWT:', session.access_token);
       }
-      setLoading(false);
     });
 
-    return () => subscription.unsubscribe();
+    return () => {
+      authListener.subscription.unsubscribe();
+    };
   }, []);
 
   const login = async (email, password) => {
     try {
-      console.log('Attempting login with:', { email, passwordLength: password.length });
-      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+      console.log('Attempting login with:', { email: email.trim().toLowerCase(), passwordLength: password.length });
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: email.trim().toLowerCase(), // Normalize email
+        password,
+      });
       if (error) {
-        console.error('Login error:', error, { code: error.code, status: error.status });
+        console.error('Login error:', error.message, { code: error.code, status: error.status });
         throw error;
       }
       setUser(data.user);
       console.log('Logged in user:', data.user);
       console.log('Session:', data.session);
-      return data.user;
+      return { success: true, user: data.user };
     } catch (error) {
       console.error('Login failed:', error.message, error);
-      throw error;
+      return { success: false, error: error.message };
     }
   };
 
   const register = async (email, password) => {
     try {
-      console.log('Attempting registration with:', { email, passwordLength: password.length });
-      const { data, error } = await supabase.auth.signUp({ email, password });
+      console.log('Attempting registration with:', { email: email.trim().toLowerCase(), passwordLength: password.length });
+      const { data, error } = await supabase.auth.signUp({ email: email.trim().toLowerCase(), password });
       if (error) {
-        console.error('Register error:', error, { code: error.code, status: error.status });
+        console.error('Register error:', error.message, { code: error.code, status: error.status });
         throw error;
       }
       setUser(data.user);
       console.log('Registered user:', data.user);
       console.log('Session:', data.session);
-      return data.user;
+      return { success: true, user: data.user };
     } catch (error) {
       console.error('Register failed:', error.message, error);
-      throw error;
+      return { success: false, error: error.message };
     }
   };
 
@@ -97,14 +100,15 @@ export function AuthProvider({ children }) {
     try {
       const { error } = await supabase.auth.signOut();
       if (error) {
-        console.error('Logout error:', error);
+        console.error('Logout error:', error.message, error);
         throw error;
       }
       setUser(null);
       console.log('User logged out');
+      return { success: true };
     } catch (error) {
-      console.error('Logout failed:', error.message);
-      throw error;
+      console.error('Logout failed:', error.message, error);
+      return { success: false, error: error.message };
     }
   };
 

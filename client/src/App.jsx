@@ -17,7 +17,6 @@ function AppContent() {
   useEffect(() => {
     if (!user || loading) return;
 
-    // Fetch tasks
     const fetchTasks = async () => {
       try {
         const { data, error } = await supabase
@@ -26,19 +25,18 @@ function AppContent() {
           .eq('user_id', user.id)
           .order('created_at', { ascending: false });
         if (error) {
-          console.error('Error fetching tasks:', error);
+          console.error('Error fetching tasks:', error.message, error);
           throw error;
         }
         setTasks(data || []);
       } catch (error) {
-        console.error('Fetch tasks failed:', error.message);
+        console.error('Fetch tasks failed:', error.message, error);
       }
     };
 
     fetchTasks();
 
-    // Subscribe to real-time changes
-    const subscription = supabase
+    const channel = supabase
       .channel('tasks')
       .on(
         'postgres_changes',
@@ -55,26 +53,27 @@ function AppContent() {
               setTasks((prev) => prev.filter((task) => task.id !== payload.old.id));
             }
           } catch (error) {
-            console.error('Real-time update error:', error);
+            console.error('Real-time update error:', error.message, error);
           }
         }
       )
       .subscribe((status, error) => {
         if (error) {
-          console.error('Subscription error:', error);
+          console.error('Subscription error:', error.message, error);
         }
       });
 
-    return () => supabase.removeChannel(subscription);
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, [user, loading]);
 
   const handleTaskSubmit = async (task) => {
     if (!user) {
       console.error('No user authenticated');
-      return;
+      return { success: false, error: 'User not authenticated' };
     }
 
-    // Validate and map task fields
     const taskData = {
       title: task.title?.trim(),
       description: task.description?.trim() || null,
@@ -86,32 +85,27 @@ function AppContent() {
 
     if (!taskData.title) {
       console.error('Task title is required');
-      return;
+      return { success: false, error: 'Task title is required' };
     }
 
     console.log('Submitting task:', taskData);
     console.log('User ID:', user.id);
 
     try {
-      const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
-      if (sessionError || !sessionData.session) {
-        console.error('No valid session:', sessionError);
-        return;
-      }
-      console.log('Session token:', sessionData.session.access_token);
-
       const { data, error } = await supabase
         .from('tasks')
         .insert([taskData])
         .select()
         .single();
       if (error) {
-        console.error('Error adding task:', error);
-        throw error;
+        console.error('Error adding task:', error.message, error);
+        return { success: false, error: error.message };
       }
       console.log('New task:', data);
+      return { success: true, task: data };
     } catch (error) {
-      console.error('Add task failed:', error.message);
+      console.error('Add task failed:', error.message, error);
+      return { success: false, error: error.message };
     }
   };
 
@@ -120,11 +114,13 @@ function AppContent() {
     try {
       const { error } = await supabase.from('tasks').delete().eq('id', taskId);
       if (error) {
-        console.error('Error deleting task:', error);
+        console.error('Error deleting task:', error.message, error);
         throw error;
       }
+      return { success: true };
     } catch (error) {
-      console.error('Delete task failed:', error.message);
+      console.error('Delete task failed:', error.message, error);
+      return { success: false, error: error.message };
     }
   };
 
@@ -141,7 +137,7 @@ function AppContent() {
 
     if (!updatedTaskData.title) {
       console.error('Task title is required');
-      return;
+      return { success: false, error: 'Task title is required' };
     }
 
     try {
@@ -152,12 +148,14 @@ function AppContent() {
         .select()
         .single();
       if (error) {
-        console.error('Error updating task:', error);
+        console.error('Error updating task:', error.message, error);
         throw error;
       }
       console.log('Edited task:', data);
+      return { success: true, task: data };
     } catch (error) {
-      console.error('Update task failed:', error.message);
+      console.error('Update task failed:', error.message, error);
+      return { success: false, error: error.message };
     }
   };
 
@@ -166,18 +164,25 @@ function AppContent() {
   }
 
   return (
-    <div className="min-h-screen transition-colors duration-500 bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-950 dark:to-gray-900">
+    <div className="flex flex-col min-h-screen transition-colors duration-500 bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-950 dark:to-gray-900">
       <Header />
-      <main className="container px-6 py-12 mx-auto max-w-7xl">
+      <main className="container flex-1 px-6 py-12 mx-auto max-w-7xl">
         <Routes>
-          
-          <Route
-            path="/"
-            element={user ? <Home /> : <Navigate to="/login" replace />}
-          />
+         <Route path="/" element={<Home />} />
           <Route
             path="/tasks"
-            element={user ? <Tasks onSubmit={handleTaskSubmit} tasks={tasks} onDelete={handleTaskDelete} onEdit={handleTaskEdit} /> : <Navigate to="/login" replace />}
+            element={
+              user ? (
+                <Tasks
+                  onSubmit={handleTaskSubmit}
+                  tasks={tasks}
+                  onDelete={handleTaskDelete}
+                  onEdit={handleTaskEdit}
+                />
+              ) : (
+                <Navigate to="/login" replace />
+              )
+            }
           />
           <Route
             path="/login"
@@ -189,10 +194,10 @@ function AppContent() {
           />
         </Routes>
       </main>
-           <footer className="w-full p-4 text-center text-gray-700 bg-gray-200 dark:bg-gray-800 dark:text-gray-300">
-            በ ❤️ የተሰራ በ እዩእል ጌታቸው <br />
-            © Eyuel Getachew 2025
-          </footer>
+      <footer className="w-full p-4 text-center text-gray-700 bg-gray-200 dark:bg-gray-800 dark:text-gray-300">
+        በ ❤️ የተሰራ በ እዩእል ጌታቸው <br />
+        © Eyuel Getachew 2025
+      </footer>
     </div>
   );
 }
