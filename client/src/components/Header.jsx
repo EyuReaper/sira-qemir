@@ -16,40 +16,44 @@ function Header() {
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
-    setDropdownOpen(false);
+    setDropdownOpen(false); // Close dropdown when opening mobile menu
   };
 
   const toggleDropdown = () => {
     setDropdownOpen(!dropdownOpen);
-    setMenuOpen(false);
+    setMenuOpen(false); // Close mobile menu when opening dropdown
   };
 
   const handleLogout = async () => {
     try {
       await logout();
       navigate('/login');
-      setMenuOpen(false);
+      setMenuOpen(false); // Close menus after logout
       setDropdownOpen(false);
     } catch (error) {
       console.error('Logout error:', error);
+      // Optionally display an error message to the user
     }
   };
 
   return (
-    <header className="fixed top-0 left-0 z-20 w-full bg-white border-b border-gray-200 dark:bg-gray-900/30 dark:backdrop-blur-md dark:border-gray-500/20 dark:shadow-[0_4px_30px_rgba(0,0,0,0.1)]">
-      <div className="w-full py-4 text-center">
-        <h1 className="text-3xl font-extrabold text-gray-900 dark:text-white">
-          ሥራ ቀምር
-        </h1>
-      </div>
-      <nav className="max-w-screen-xl px-4 mx-auto place-items-center dark:bg-gray-900/30 dark:backdrop-blur-md dark:border-gray-500/20 dark:rounded-lg">
-        <div className="flex flex-wrap items-center justify-between">
-          <div className="flex space-x-3 md:order-2">
+    <header className="fixed top-0 left-0 z-50 w-full bg-white/80 backdrop-blur-md border-b border-gray-200 dark:bg-gray-900/70 dark:border-gray-700 shadow-lg">
+      <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between py-3">
+          {/* Logo/Title */}
+          <Link to="/" className="flex-shrink-0">
+            <h1 className="text-4xl font-extrabold text-gray-900 dark:text-white tracking-tight">
+              ሥራ ቀምር
+            </h1>
+          </Link>
+
+          {/* Right-aligned items: User menu, Dark Mode Toggle, Mobile Menu Toggle */}
+          <div className="flex items-center space-x-3">
             {user && (
               <div className="relative">
                 <button
                   onClick={toggleDropdown}
-                  className="flex items-center justify-center w-10 h-10 text-gray-500 rounded-full hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-600 glow-on-hover"
+                  className="flex items-center justify-center w-10 h-10 rounded-full text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 transition-all duration-200"
                   aria-label="User menu"
                 >
                   <svg
@@ -68,13 +72,13 @@ function Header() {
                   </svg>
                 </button>
                 {dropdownOpen && (
-                  <div className="absolute right-0 w-48 mt-2 bg-white rounded-lg shadow-lg dark:bg-gray-800/30 dark:backdrop-blur-md dark:border dark:border-gray-500/20 animate-slide-in">
-                    <div className="px-4 py-2 text-sm text-gray-700 dark:text-gray-300">
+                  <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-xl py-1 animate-fade-in-down">
+                    <div className="px-4 py-2 text-sm text-gray-700 dark:text-gray-300 border-b border-gray-100 dark:border-gray-700">
                       {user.email}
                     </div>
                     <button
                       onClick={handleLogout}
-                      className="block w-full px-4 py-2 text-sm text-left text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-red-400 md:dark:hover:text-red-500"
+                      className="block w-full text-left px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200"
                     >
                       ውጣ
                     </button>
@@ -82,15 +86,50 @@ function Header() {
                 )}
               </div>
             )}
+
+            {/* Dark Mode Toggle */}
+            <label className="relative inline-block w-[4em] h-[2.2em] rounded-full shadow-inner bg-gray-300 dark:bg-gray-700 transition-colors duration-300">
+              <input
+                type="checkbox"
+                checked={darkMode}
+                onChange={toggleDarkMode}
+                className="w-0 h-0 opacity-0 peer" // Hide checkbox but keep it for functionality
+              />
+              <span
+                className="absolute cursor-pointer inset-0 bg-gradient-to-r from-blue-400 to-indigo-500 rounded-full transition-all duration-400
+                before:content-[''] before:absolute before:h-[1.8em] before:w-[1.8em] before:rounded-full before:left-[0.2em] before:bottom-[0.2em]
+                before:bg-white before:transition-transform before:duration-400 before:ease-in-out
+                peer-checked:before:translate-x-[1.8em] peer-checked:bg-gradient-to-r peer-checked:from-purple-600 peer-checked:to-pink-500"
+              />
+              {/* Sun icon */}
+              <svg
+                className="absolute left-[0.4em] top-[0.4em] w-4 h-4 text-yellow-500 transition-all duration-300 peer-checked:opacity-0"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path d="M12 2.25a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V3a.75.75 0 01.75-.75zM7.427 4.636a.75.75 0 01.066 1.06L6.11 7.743a.75.75 0 01-1.06-1.06l1.38-1.38a.75.75 0 011.06-.067zm10.516 0a.75.75 0 01.067 1.06l-1.38 1.38a.75.75 0 01-1.06-1.06l1.38-1.38a.75.75 0 011.06-.067zM12 16.5a4.5 4.5 0 100-9 4.5 4.5 0 000 9zM18.75 12a.75.75 0 01-.75.75h-2.25a.75.75 0 010-1.5h2.25a.75.75 0 01.75.75zM4.5 12a.75.75 0 01-.75.75H2.25a.75.75 0 010-1.5h2.25a.75.75 0 01.75.75zm13.864 5.364a.75.75 0 01-1.06.066l-1.38 1.38a.75.75 0 111.06 1.06l1.38-1.38a.75.75 0 01-.066-1.06zm-10.516 0a.75.75 0 01-1.06-.067l-1.38 1.38a.75.75 0 111.06 1.06l1.38-1.38a.75.75 0 01.067-1.06zM12 21.75a.75.75 0 01-.75-.75v-2.25a.75.75 0 011.5 0v2.25a.75.75 0 01-.75.75z" />
+              </svg>
+
+              {/* Moon icon */}
+              <svg
+                className="absolute right-[0.4em] top-[0.4em] w-4 h-4 text-white transition-all duration-300 opacity-0 peer-checked:opacity-100"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path d="M9.53 2.659a.75.75 0 01.442 1.258 8.611 8.611 0 00-4.706 5.606.75.75 0 01-1.164.717 10.155 10.155 0 015.776-6.666zM12 7.5a4.5 4.5 0 100 9 4.5 4.5 0 000-9zM2.25 12c0 5.66 4.06 10.372 9.406 11.232a.75.75 0 01-.976-1.062 8.61 8.61 0 00-4.706-5.606.75.75 0 011.164-.717 10.155 10.155 0 015.776 6.666.75.75 0 01.442 1.258A.75.75 0 0112 21.75c5.66 0 10.372-4.06 11.232-9.406a.75.75 0 01-1.062-.976A8.61 8.61 0 0018.75 4.25a.75.75 0 01-.717-1.164 10.155 10.155 0 01-6.666-5.776.75.75 0 011.258.442z" />
+              </svg>
+            </label>
+
+            {/* Mobile Menu Toggle */}
             <button
               onClick={toggleMenu}
-              className="inline-flex items-center justify-center w-10 h-10 p-2 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+              className="inline-flex items-center justify-center w-10 h-10 p-2 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600 transition-all duration-200"
               aria-controls="navbar-sticky"
               aria-expanded={menuOpen}
             >
               <span className="sr-only">Open main menu</span>
               <svg
-                className="w-5 h-5"
+                className="w-6 h-6"
                 aria-hidden="true"
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -105,41 +144,20 @@ function Header() {
                 />
               </svg>
             </button>
-            <label className="relative inline-block w-[4em] h-[2.2em] text-[17px] rounded-full shadow-[0_0_10px_rgba(0,0,0,0.1)]">
-              <input
-                type="checkbox"
-                checked={darkMode}
-                onChange={toggleDarkMode}
-                className="w-0 h-0 opacity-0"
-              />
-              <span
-                className="absolute cursor-pointer inset-0 bg-[#2a2a2a] dark:bg-[#00a6ff] rounded-full transition duration-400 overflow-hidden
-                  before:content-[''] before:absolute before:h-[1.2em] before:w-[1.2em] before:rounded-[20px] before:left-[0.5em] before:bottom-[0.5em]
-                  before:transition-[0.4s] before:duration-400 before:[transition-timing-function:cubic-bezier(0.81,-0.04,0.38,1.5)]
-                  before:shadow-[inset_8px_-4px_0_0_#fff] dark:before:shadow-[inset_15px_-4px_0_15px_#ffcf48] dark:before:translate-x-[1.8em]"
-              >
-                <span className="star bg-white rounded-full absolute w-[5px] h-[5px] transition-all duration-400 left-[2.5em] top-[0.5em] dark:opacity-0" />
-                <span className="star bg-white rounded-full absolute w-[5px] h-[5px] transition-all duration-400 left-[2.2em] top-[1.2em] dark:opacity-0" />
-                <span className="star bg-white rounded-full absolute w-[5px] h-[5px] transition-all duration-400 left-[3em] top-[0.9em] dark:opacity-0" />
-                <span className="cloud w-[3.5em] absolute bottom-[-1.4em] left-[-1.1em] opacity-0 transition-all duration-400 dark:opacity-100">
-                  <svg viewBox="0 0 64 64" fill="#fff">
-                    <path d="M41.4 25.3c-1.2-.4-2.5-.6-3.8-.6-5.8 0-10.6 4.8-10.6 10.6 0 1.2.2 2.4.6 3.5-6.7 0-12.1-5.4-12.1-12.1S20.9 14.6 27.6 14.6c2.6 0 5 .8 7 2.1 1.4-2.3 3.8-3.8 6.5-3.8 4.1 0 7.5 3.4 7.5 7.5 0 2.4-1.1 4.5-2.9 5.9.1-.5.2-1 .2-1.6 0-3.7-2.9-6.7-6.5-6.7z"/>
-                  </svg>
-                </span>
-              </span>
-            </label>
           </div>
-          <div
+
+          {/* Navigation Links */}
+          <nav
             className={`items-center justify-between w-full md:flex md:w-auto md:order-1 ${
               menuOpen ? 'block' : 'hidden'
-            }`}
+            } mt-4 md:mt-0`}
             id="navbar-sticky"
           >
-            <ul className="flex flex-col p-4 mt-4 font-medium border border-gray-100 rounded-lg md:p-0 bg-gray-50 md:space-x-8 md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-gray-800/30 dark:backdrop-blur-md dark:border-gray-500/20 md:dark:bg-gray-900/30">
+            <ul className="flex flex-col p-4 md:p-0 font-medium border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:border-0 md:bg-transparent dark:bg-gray-800/50 dark:border-gray-700 md:dark:bg-transparent shadow-xl md:shadow-none">
               <li>
                 <Link
                   to="/"
-                  className="block px-3 py-2 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
+                  className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700 transition-colors duration-200"
                   onClick={() => setMenuOpen(false)}
                 >
                   መነሻ
@@ -149,7 +167,7 @@ function Header() {
                 <li>
                   <Link
                     to="/tasks"
-                    className="block px-3 py-2 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
+                    className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700 transition-colors duration-200"
                     onClick={() => setMenuOpen(false)}
                   >
                     ተግባራት
@@ -161,7 +179,7 @@ function Header() {
                   <li>
                     <Link
                       to="/login"
-                      className="block px-3 py-2 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
+                      className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700 transition-colors duration-200"
                       onClick={() => setMenuOpen(false)}
                     >
                       መግባት
@@ -170,7 +188,7 @@ function Header() {
                   <li>
                     <Link
                       to="/register"
-                      className="block px-3 py-2 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
+                      className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700 transition-colors duration-200"
                       onClick={() => setMenuOpen(false)}
                     >
                       መመዝገብ
@@ -179,9 +197,9 @@ function Header() {
                 </>
               )}
             </ul>
-          </div>
+          </nav>
         </div>
-      </nav>
+      </div>
     </header>
   );
 }

@@ -1,74 +1,95 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { Link, useNavigate } from 'react-router-dom';
+import { FiMail, FiLock } from 'react-icons/fi'; // Using react-icons for input icons
 
 function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
   const { login } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
-    const trimmedEmail = email.trim();
-    const trimmedPassword = password.trim();
-    console.log('Login attempt:', { email: trimmedEmail, password: trimmedPassword });
-    try {
-      await login(trimmedEmail, trimmedPassword);
-      navigate('/tasks');
-    } catch (err) {
-      console.error('Login failed:', err.message, err); // Line 20
-      setError(err.message === 'Invalid login credentials' ? 'የተሳሳተ ኢሜይል ወይም የይለፍ ቃል' : err.message);
+    setLoading(true);
+
+    const { success, error: loginError } = await login(email, password);
+    
+    setLoading(false);
+
+    if (!success) {
+      setError(loginError || 'Login failed. Please check your email and password.');
+    } else {
+      navigate('/tasks'); // Redirect to tasks on successful login
     }
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-950 dark:to-gray-900">
-      <div className="w-full max-w-md p-6 bg-white rounded-lg shadow-lg dark:bg-gray-900/30 dark:backdrop-blur-md dark:border dark:border-gray-500/20 animate-slide-in">
-        <h2 className="mb-6 text-2xl font-bold text-center text-gray-900 dark:text-white">መግባት</h2>
-        <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <label className="block mb-2 text-gray-700 dark:text-gray-300" htmlFor="email">
-              ኢሜይል
-            </label>
+    // Main container with a gradient background, covering the full screen
+    <div className="flex items-center justify-center min-h-screen p-4 bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500">
+      
+      {/* Glassmorphic form container */}
+      <div 
+        className="w-full max-w-md p-8 space-y-8 bg-white/10 dark:bg-black/10 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/20"
+      >
+        <div className="text-center">
+          <h2 className="text-4xl font-bold text-white">
+            ግባ
+          </h2>
+          <p className="mt-2 text-white/80">ወደ ሥራቀምር መግቢያ </p>
+        </div>
+
+        {/* Error message styling */}
+        {error && (
+          <div className="p-3 text-center text-white bg-red-500/50 rounded-lg">
+            <p>{error}</p>
+          </div>
+        )}
+
+        <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Email Input */}
+          <div className="relative">
+            <FiMail className="absolute w-5 h-5 text-white/50 top-3 left-3" />
             <input
               type="email"
-              id="email"
+              placeholder="ኢሜይል"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-3 py-2 border rounded-md dark:bg-gray-800 dark:border-gray-600 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full py-3 pl-10 pr-4 text-white bg-transparent border-b-2 border-white/20 focus:outline-none focus:border-pink-400 placeholder:text-white/60 transition-colors"
               required
             />
           </div>
-          <div className="mb-6">
-            <label className="block mb-2 text-gray-700 dark:text-gray-300" htmlFor="password">
-              የይለፍ ቃል
-            </label>
+
+          {/* Password Input */}
+          <div className="relative">
+            <FiLock className="absolute w-5 h-5 text-white/50 top-3 left-3" />
             <input
               type="password"
-              id="password"
+              placeholder="የይለፍ ቃል"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-3 py-2 border rounded-md dark:bg-gray-800 dark:border-gray-600 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full py-3 pl-10 pr-4 text-white bg-transparent border-b-2 border-white/20 focus:outline-none focus:border-pink-400 placeholder:text-white/60 transition-colors"
               required
             />
           </div>
-          {error && (
-            <p className="mb-4 text-center text-red-500 dark:text-red-400">{error}</p>
-          )}
+
+          {/* Submit Button */}
           <button
             type="submit"
-            className="w-full px-4 py-2 text-white transition bg-blue-600 rounded-md hover:bg-blue-700 dark:bg-cyan-400 dark:hover:bg-cyan-500 glow-on-hover"
+            disabled={loading}
+            className="w-full px-4 py-3 font-bold text-purple-600 transition-all duration-300 transform bg-white rounded-lg shadow-lg hover:bg-white/90 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white/50 disabled:bg-gray-400 disabled:scale-100"
           >
-            ግባ
+            {loading ? 'በመግባት ላይ...' : 'ግባ'}
           </button>
         </form>
-        <p className="mt-4 text-center text-gray-600 dark:text-gray-300">
-          መለያ የለህም?{' '}
-          <Link to="/register" className="text-blue-600 dark:text-cyan-400 hover:underline">
-            አሁን መዝገብ
+
+        <p className="text-sm text-center text-white/80">
+          አካውንት የለዎትም?{' '}
+          <Link to="/register" className="font-bold text-white hover:underline">
+            ይመዝገቡ
           </Link>
         </p>
       </div>

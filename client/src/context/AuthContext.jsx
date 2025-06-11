@@ -36,7 +36,7 @@ export function AuthProvider({ children }) {
         }
       } catch (error) {
         console.error('Session fetch failed:', error.message);
-        setUser(null); // Clear user on error
+        setUser(null);
       } finally {
         setLoading(false);
       }
@@ -49,6 +49,8 @@ export function AuthProvider({ children }) {
       console.log('Auth state changed:', session);
       if (session?.access_token) {
         console.log('JWT:', session.access_token);
+      } else if (!session) {
+        console.log('No session, user cleared');
       }
     });
 
@@ -59,13 +61,14 @@ export function AuthProvider({ children }) {
 
   const login = async (email, password) => {
     try {
-      console.log('Attempting login with:', { email: email.trim().toLowerCase(), passwordLength: password.length });
+      const normalizedEmail = email.trim().toLowerCase();
+      console.log('Attempting login with:', { email: normalizedEmail, passwordLength: password.length });
       const { data, error } = await supabase.auth.signInWithPassword({
-        email: email.trim().toLowerCase(), // Normalize email
+        email: normalizedEmail,
         password,
       });
       if (error) {
-        console.error('Login error:', error.message, { code: error.code, status: error.status });
+        console.error('Login error:', error.message, { code: error.code, status: error.status, details: error });
         throw error;
       }
       setUser(data.user);
@@ -73,17 +76,18 @@ export function AuthProvider({ children }) {
       console.log('Session:', data.session);
       return { success: true, user: data.user };
     } catch (error) {
-      console.error('Login failed:', error.message, error);
+      console.error('Login failed:', error.message, error); // Line 63
       return { success: false, error: error.message };
     }
   };
 
   const register = async (email, password) => {
     try {
-      console.log('Attempting registration with:', { email: email.trim().toLowerCase(), passwordLength: password.length });
-      const { data, error } = await supabase.auth.signUp({ email: email.trim().toLowerCase(), password });
+      const normalizedEmail = email.trim().toLowerCase();
+      console.log('Attempting registration with:', { email: normalizedEmail, passwordLength: password.length });
+      const { data, error } = await supabase.auth.signUp({ email: normalizedEmail, password });
       if (error) {
-        console.error('Register error:', error.message, { code: error.code, status: error.status });
+        console.error('Register error:', error.message, { code: error.code, status: error.status, details: error });
         throw error;
       }
       setUser(data.user);
