@@ -4,10 +4,10 @@ Sira Qemir (ሥራ ቀምር) is a modern task management web application built 
 
 # Preview
 
-![Preview Screenshot 1](/client/public/assets/screencapture-landing-siraqemir.png).
+![Preview Screenshot 1](/client/public/assets/screenshot-landingpage-siraqemir.png).
 ![Preview Screenshot 2](/client/public/assets/screencapture-sira-qemir-completed-tasks.png).
 ![Preview Screenshot 3](/client/public/assets/screencapture-darkmod-siraqemir.png).
-![Preview Screenshot 4](/client/public/assets/screencapture-login-siraqemir.png).
+![Preview Screenshot 4](/client/public/assets/screenshot-login-siraqemir.png).
 
 
 ## Features
