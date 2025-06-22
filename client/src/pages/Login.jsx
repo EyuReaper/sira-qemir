@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { Link, useNavigate } from 'react-router-dom';
 import { FiMail, FiLock, FiEye, FiEyeOff } from 'react-icons/fi'; // Add eye icons
@@ -12,6 +12,14 @@ function Login() {
 
   const { login } = useAuth(); // Destructure login from useAuth
   const navigate = useNavigate();
+
+  const emailInputRef = useRef(null);
+
+  useEffect(() => {
+    if (emailInputRef.current) {
+      emailInputRef.current.focus();
+    }
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault(); // Prevent default form submission behavior
@@ -87,6 +95,7 @@ function Login() {
               className="w-full py-3 pl-10 pr-4 text-white transition-colors bg-transparent border-b-2 border-white/20 focus:outline-none focus:border-pink-400 placeholder:text-white/60"
               required
               disabled={loading}
+              ref={emailInputRef} // <-- Autofocus on mount
             />
           </div>
 

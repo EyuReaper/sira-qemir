@@ -34,36 +34,6 @@
       "assignedTo": {
         "name": "EyuReaper"
       },
-      "category": "User Experience",
-      "creation_time": "2025-06-22T20:28:47.290Z",
-      "description": {
-        "content": " the email input on mount for faster login.",
-        "mime": "text/markdown"
-      },
-      "id": "3",
-      "prio": 4,
-      "references": [],
-      "title": "Auto-focus"
-    },
-    {
-      "assignedTo": {
-        "name": "EyuReaper"
-      },
-      "category": "User Experience",
-      "creation_time": "2025-06-22T20:29:24.570Z",
-      "description": {
-        "content": "on password field should submit the form (already works, but ensure it’s tested).",
-        "mime": "text/markdown"
-      },
-      "id": "4",
-      "prio": 4,
-      "references": [],
-      "title": "Enter key"
-    },
-    {
-      "assignedTo": {
-        "name": "EyuReaper"
-      },
       "category": "Feedback",
       "creation_time": "2025-06-22T20:32:11.730Z",
       "description": {
@@ -141,6 +111,24 @@
       "assignedTo": {
         "name": "EyuReaper"
       },
+      "category": "User Experience",
+      "creation_time": "2025-06-22T20:29:24.570Z",
+      "description": {
+        "content": "on password field should submit the form (already works, but ensure it’s tested).",
+        "mime": "text/markdown"
+      },
+      "id": "4",
+      "prio": 4,
+      "references": [],
+      "title": "Enter key"
+    }
+  ],
+  "testing": [],
+  "done": [
+    {
+      "assignedTo": {
+        "name": "EyuReaper"
+      },
       "category": "Accessibility Improvements",
       "creation_time": "2025-06-22T20:26:58.697Z",
       "description": {
@@ -151,10 +139,7 @@
       "prio": 4,
       "references": [],
       "title": "Add labels"
-    }
-  ],
-  "testing": [],
-  "done": [
+    },
     {
       "assignedTo": {
         "name": "EyuReaper"
@@ -169,6 +154,21 @@
       "prio": 4,
       "references": [],
       "title": "Show password toggle"
+    },
+    {
+      "assignedTo": {
+        "name": "EyuReaper"
+      },
+      "category": "User Experience",
+      "creation_time": "2025-06-22T20:28:47.290Z",
+      "description": {
+        "content": " the email input on mount for faster login.",
+        "mime": "text/markdown"
+      },
+      "id": "3",
+      "prio": 4,
+      "references": [],
+      "title": "Auto-focus"
     }
   ]
 }
