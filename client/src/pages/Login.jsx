@@ -63,7 +63,10 @@ function Login() {
 
         {/* Error message styling - Using formError */}
         {formError && (
-          <div className="p-3 text-center text-white rounded-lg bg-red-500/50">
+          <div
+            className="p-3 text-center text-white rounded-lg bg-red-500/50"
+            aria-live="polite"
+          >
             <p>{formError}</p>
           </div>
         )}
@@ -71,29 +74,37 @@ function Login() {
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Email Input */}
           <div className="relative">
+            <label htmlFor="login-email" className="sr-only">
+              ኢሜይል
+            </label>
             <FiMail className="absolute w-5 h-5 text-white/50 top-3 left-3" />
             <input
+              id="login-email"
               type="email"
               placeholder="ኢሜይል"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="w-full py-3 pl-10 pr-4 text-white transition-colors bg-transparent border-b-2 border-white/20 focus:outline-none focus:border-pink-400 placeholder:text-white/60"
               required
-              disabled={loading} // Disable input while loading
+              disabled={loading}
             />
           </div>
 
           {/* Password Input with Show/Hide */}
           <div className="relative">
+            <label htmlFor="login-password" className="sr-only">
+              የይለፍ ቃል
+            </label>
             <FiLock className="absolute w-5 h-5 text-white/50 top-3 left-3" />
             <input
+              id="login-password"
               type={showPassword ? "text" : "password"}
               placeholder="የይለፍ ቃል"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="w-full py-3 pl-10 pr-10 text-white transition-colors bg-transparent border-b-2 border-white/20 focus:outline-none focus:border-pink-400 placeholder:text-white/60"
               required
-              disabled={loading} // Disable input while loading
+              disabled={loading}
             />
             <button
               type="button"

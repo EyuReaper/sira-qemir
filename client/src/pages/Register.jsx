@@ -79,7 +79,10 @@ function Register() {
 
         {/* Server error message styling */}
         {serverError && (
-          <div className="p-3 text-center text-white rounded-lg bg-red-500/50">
+          <div
+            className="p-3 text-center text-white rounded-lg bg-red-500/50"
+            aria-live="polite"
+          >
             <p>{serverError}</p>
           </div>
         )}
@@ -87,8 +90,12 @@ function Register() {
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* Email Input */}
           <div className="relative">
+            <label htmlFor="register-email" className="sr-only">
+              ኢሜይል
+            </label>
             <FiMail className={`absolute w-5 h-5 top-3 left-3 ${errors.email ? 'text-red-400' : 'text-white/50'}`} />
             <input
+              id="register-email"
               type="email"
               placeholder="ኢሜይል"
               value={formData.email}
@@ -101,8 +108,12 @@ function Register() {
 
           {/* Password Input with Show/Hide */}
           <div className="relative">
+            <label htmlFor="register-password" className="sr-only">
+              የይለፍ ቃል
+            </label>
             <FiLock className={`absolute w-5 h-5 top-3 left-3 ${errors.password ? 'text-red-400' : 'text-white/50'}`} />
             <input
+              id="register-password"
               type={showPassword ? "text" : "password"}
               placeholder="የይለፍ ቃል"
               value={formData.password}
@@ -124,8 +135,12 @@ function Register() {
 
           {/* Confirm Password Input with Show/Hide */}
           <div className="relative">
+            <label htmlFor="register-confirm-password" className="sr-only">
+              የይለፍ ቃል ያረጋግጡ
+            </label>
             <FiLock className={`absolute w-5 h-5 top-3 left-3 ${errors.confirmPassword ? 'text-red-400' : 'text-white/50'}`} />
             <input
+              id="register-confirm-password"
               type={showConfirmPassword ? "text" : "password"}
               placeholder="የይለፍ ቃል ያረጋግጡ"
               value={formData.confirmPassword}

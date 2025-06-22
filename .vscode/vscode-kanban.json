@@ -151,7 +151,10 @@
       "prio": 4,
       "references": [],
       "title": "Add labels"
-    },
+    }
+  ],
+  "testing": [],
+  "done": [
     {
       "assignedTo": {
         "name": "EyuReaper"
@@ -167,7 +170,5 @@
       "references": [],
       "title": "Show password toggle"
     }
-  ],
-  "testing": [],
-  "done": []
+  ]
 }
