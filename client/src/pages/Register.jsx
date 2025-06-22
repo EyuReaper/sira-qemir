@@ -1,13 +1,15 @@
 import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { Link, useNavigate } from 'react-router-dom';
-import { FiMail, FiLock } from 'react-icons/fi'; // Re-using icons for consistency
+import { FiMail, FiLock, FiEye, FiEyeOff } from 'react-icons/fi'; // Add eye icons
 
 function Register() {
   const [formData, setFormData] = useState({ email: '', password: '', confirmPassword: '' });
   const [errors, setErrors] = useState({});
   const [serverError, setServerError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false); // For password field
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false); // For confirm password field
   const { register } = useAuth();
   const navigate = useNavigate();
 
@@ -66,7 +68,7 @@ function Register() {
       
       {/* Glassmorphic form container */}
       <div 
-        className="w-full max-w-md p-8 space-y-6 bg-white/10 dark:bg-black/10 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/20"
+        className="w-full max-w-md p-8 space-y-6 border shadow-2xl bg-white/10 dark:bg-black/10 backdrop-blur-xl rounded-2xl border-white/20"
       >
         <div className="text-center">
           <h2 className="text-4xl font-bold text-white">
@@ -77,7 +79,7 @@ function Register() {
 
         {/* Server error message styling */}
         {serverError && (
-          <div className="p-3 text-center text-white bg-red-500/50 rounded-lg">
+          <div className="p-3 text-center text-white rounded-lg bg-red-500/50">
             <p>{serverError}</p>
           </div>
         )}
@@ -97,31 +99,49 @@ function Register() {
             {errors.email && <p className="mt-1 text-xs text-red-400">{errors.email}</p>}
           </div>
 
-          {/* Password Input */}
+          {/* Password Input with Show/Hide */}
           <div className="relative">
             <FiLock className={`absolute w-5 h-5 top-3 left-3 ${errors.password ? 'text-red-400' : 'text-white/50'}`} />
             <input
-              type="password"
+              type={showPassword ? "text" : "password"}
               placeholder="የይለፍ ቃል"
               value={formData.password}
               onChange={handleChange('password')}
-              className={`w-full py-3 pl-10 pr-4 text-white bg-transparent border-b-2 focus:outline-none placeholder:text-white/60 transition-colors ${errors.password ? 'border-red-500' : 'border-white/20 focus:border-pink-400'}`}
+              className={`w-full py-3 pl-10 pr-10 text-white bg-transparent border-b-2 focus:outline-none placeholder:text-white/60 transition-colors ${errors.password ? 'border-red-500' : 'border-white/20 focus:border-pink-400'}`}
               required
             />
+            <button
+              type="button"
+              className="absolute top-3 right-3 text-white/50"
+              tabIndex={-1}
+              onClick={() => setShowPassword((v) => !v)}
+              aria-label={showPassword ? "የይለፍ ቃል መደበቅ" : "የይለፍ ቃል ማሳየት"}
+            >
+              {showPassword ? <FiEyeOff /> : <FiEye />}
+            </button>
             {errors.password && <p className="mt-1 text-xs text-red-400">{errors.password}</p>}
           </div>
 
-          {/* Confirm Password Input */}
+          {/* Confirm Password Input with Show/Hide */}
           <div className="relative">
             <FiLock className={`absolute w-5 h-5 top-3 left-3 ${errors.confirmPassword ? 'text-red-400' : 'text-white/50'}`} />
             <input
-              type="password"
+              type={showConfirmPassword ? "text" : "password"}
               placeholder="የይለፍ ቃል ያረጋግጡ"
               value={formData.confirmPassword}
               onChange={handleChange('confirmPassword')}
-              className={`w-full py-3 pl-10 pr-4 text-white bg-transparent border-b-2 focus:outline-none placeholder:text-white/60 transition-colors ${errors.confirmPassword ? 'border-red-500' : 'border-white/20 focus:border-pink-400'}`}
+              className={`w-full py-3 pl-10 pr-10 text-white bg-transparent border-b-2 focus:outline-none placeholder:text-white/60 transition-colors ${errors.confirmPassword ? 'border-red-500' : 'border-white/20 focus:border-pink-400'}`}
               required
             />
+            <button
+              type="button"
+              className="absolute top-3 right-3 text-white/50"
+              tabIndex={-1}
+              onClick={() => setShowConfirmPassword((v) => !v)}
+              aria-label={showConfirmPassword ? "የይለፍ ቃል መደበቅ" : "የይለፍ ቃል ማሳየት"}
+            >
+              {showConfirmPassword ? <FiEyeOff /> : <FiEye />}
+            </button>
             {errors.confirmPassword && <p className="mt-1 text-xs text-red-400">{errors.confirmPassword}</p>}
           </div>
 

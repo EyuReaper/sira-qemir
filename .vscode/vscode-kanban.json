@@ -1,0 +1,173 @@
+{
+  "todo": [
+    {
+      "assignedTo": {
+        "name": "EyuReaper"
+      },
+      "category": "security",
+      "creation_time": "2025-06-22T20:30:56.214Z",
+      "description": {
+        "content": "for password input:",
+        "mime": "text/markdown"
+      },
+      "id": "6",
+      "prio": 5,
+      "references": [],
+      "title": "Disable autocomplete"
+    },
+    {
+      "assignedTo": {
+        "name": "EyuReaper"
+      },
+      "category": "security",
+      "creation_time": "2025-06-22T20:30:26.626Z",
+      "description": {
+        "content": " the email before sending to backend (currently only logged, not sent).",
+        "mime": "text/markdown"
+      },
+      "id": "5",
+      "prio": 5,
+      "references": [],
+      "title": "Trim and lowercase"
+    },
+    {
+      "assignedTo": {
+        "name": "EyuReaper"
+      },
+      "category": "User Experience",
+      "creation_time": "2025-06-22T20:28:47.290Z",
+      "description": {
+        "content": " the email input on mount for faster login.",
+        "mime": "text/markdown"
+      },
+      "id": "3",
+      "prio": 4,
+      "references": [],
+      "title": "Auto-focus"
+    },
+    {
+      "assignedTo": {
+        "name": "EyuReaper"
+      },
+      "category": "User Experience",
+      "creation_time": "2025-06-22T20:29:24.570Z",
+      "description": {
+        "content": "on password field should submit the form (already works, but ensure it’s tested).",
+        "mime": "text/markdown"
+      },
+      "id": "4",
+      "prio": 4,
+      "references": [],
+      "title": "Enter key"
+    },
+    {
+      "assignedTo": {
+        "name": "EyuReaper"
+      },
+      "category": "Feedback",
+      "creation_time": "2025-06-22T20:32:11.730Z",
+      "description": {
+        "content": "when user starts typing again.",
+        "mime": "text/markdown"
+      },
+      "id": "8",
+      "prio": 3,
+      "references": [],
+      "title": "Clear error"
+    },
+    {
+      "assignedTo": {
+        "name": "EyuReaper"
+      },
+      "category": "Feedback",
+      "creation_time": "2025-06-22T20:31:46.847Z",
+      "description": {
+        "content": "or loading indicator in the button when loading.",
+        "mime": "text/markdown"
+      },
+      "id": "7",
+      "prio": 3,
+      "references": [],
+      "title": "Show a spinner"
+    },
+    {
+      "assignedTo": {
+        "name": "EyuReaper"
+      },
+      "category": "Code Quality",
+      "creation_time": "2025-06-22T20:33:04.428Z",
+      "description": {
+        "content": "into small components for reusability.",
+        "mime": "text/markdown"
+      },
+      "id": "9",
+      "prio": 2,
+      "references": [],
+      "title": "Extract form fields"
+    },
+    {
+      "assignedTo": {
+        "name": "EyuReaper"
+      },
+      "category": "Internationalization",
+      "creation_time": "2025-06-22T20:34:24.693Z",
+      "description": {
+        "content": "If you plan to support multiple languages, consider using a library like react-i18next.",
+        "mime": "text/markdown"
+      },
+      "id": "11",
+      "prio": 2,
+      "references": [],
+      "title": "multiple language support"
+    },
+    {
+      "assignedTo": {
+        "name": "EyuReaper"
+      },
+      "category": "Code Quality",
+      "creation_time": "2025-06-22T20:33:28.428Z",
+      "description": {
+        "content": "Use PropTypes or TypeScript for better maintainability.",
+        "mime": "text/markdown"
+      },
+      "id": "10",
+      "prio": 2,
+      "references": [],
+      "title": "Type checking"
+    }
+  ],
+  "in-progress": [
+    {
+      "assignedTo": {
+        "name": "EyuReaper"
+      },
+      "category": "Accessibility Improvements",
+      "creation_time": "2025-06-22T20:26:58.697Z",
+      "description": {
+        "content": "for inputs (even if visually hidden) for screen readers\nUse aria-live=\"polite\" on the error message container for better accessibility.",
+        "mime": "text/markdown"
+      },
+      "id": "1",
+      "prio": 4,
+      "references": [],
+      "title": "Add labels"
+    },
+    {
+      "assignedTo": {
+        "name": "EyuReaper"
+      },
+      "category": "User Experience",
+      "creation_time": "2025-06-22T20:28:13.847Z",
+      "description": {
+        "content": "Allow users to see/hide their password.",
+        "mime": "text/markdown"
+      },
+      "id": "2",
+      "prio": 4,
+      "references": [],
+      "title": "Show password toggle"
+    }
+  ],
+  "testing": [],
+  "done": []
+}
