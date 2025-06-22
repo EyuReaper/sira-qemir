@@ -34,6 +34,66 @@
       "assignedTo": {
         "name": "EyuReaper"
       },
+      "category": "Minor Suggestions",
+      "creation_time": "2025-06-22T21:21:05.643Z",
+      "description": {
+        "content": "Your getFriendlyErrorMessage function is good.\nYou might want to add more custom messages as your app grows.",
+        "mime": "text/markdown"
+      },
+      "id": "13",
+      "prio": 4,
+      "references": [],
+      "title": "Error Message Handling"
+    },
+    {
+      "assignedTo": {
+        "name": "EyuReaper"
+      },
+      "category": "Minor Suggestions",
+      "creation_time": "2025-06-22T21:21:55.166Z",
+      "description": {
+        "content": "The loading state only tracks the initial session load, not ongoing login/register/logout.\nIf you want to show loading indicators for those actions, consider separate loading states or document this for consumers.",
+        "mime": "text/markdown"
+      },
+      "id": "15",
+      "prio": 4,
+      "references": [],
+      "title": "Loading State"
+    },
+    {
+      "assignedTo": {
+        "name": "EyuReaper"
+      },
+      "category": "Minor Suggestions",
+      "creation_time": "2025-06-22T21:21:27.705Z",
+      "description": {
+        "content": "All auth functions (login, register, logout) return { success, ... } objects, which is good for consumers.",
+        "mime": "text/markdown"
+      },
+      "id": "14",
+      "prio": 4,
+      "references": [],
+      "title": "Return Values Consistency"
+    },
+    {
+      "assignedTo": {
+        "name": "EyuReaper"
+      },
+      "category": "Minor Suggestions",
+      "creation_time": "2025-06-22T21:20:32.882Z",
+      "description": {
+        "content": "The cleanup function uses subscription.unsubscribe().\nThis is correct for Supabase v2, but if you ever upgrade, check the Supabase docs for any API changes.",
+        "mime": "text/markdown"
+      },
+      "id": "12",
+      "prio": 4,
+      "references": [],
+      "title": "Subscription Cleanup"
+    },
+    {
+      "assignedTo": {
+        "name": "EyuReaper"
+      },
       "category": "Feedback",
       "creation_time": "2025-06-22T20:32:11.730Z",
       "description": {
@@ -106,7 +166,8 @@
       "title": "Type checking"
     }
   ],
-  "in-progress": [
+  "in-progress": [],
+  "testing": [
     {
       "assignedTo": {
         "name": "EyuReaper"
@@ -123,7 +184,6 @@
       "title": "Enter key"
     }
   ],
-  "testing": [],
   "done": [
     {
       "assignedTo": {
@@ -145,6 +205,21 @@
         "name": "EyuReaper"
       },
       "category": "User Experience",
+      "creation_time": "2025-06-22T20:28:47.290Z",
+      "description": {
+        "content": " the email input on mount for faster login.",
+        "mime": "text/markdown"
+      },
+      "id": "3",
+      "prio": 4,
+      "references": [],
+      "title": "Auto-focus"
+    },
+    {
+      "assignedTo": {
+        "name": "EyuReaper"
+      },
+      "category": "User Experience",
       "creation_time": "2025-06-22T20:28:13.847Z",
       "description": {
         "content": "Allow users to see/hide their password.",
@@ -159,16 +234,16 @@
       "assignedTo": {
         "name": "EyuReaper"
       },
-      "category": "User Experience",
-      "creation_time": "2025-06-22T20:28:47.290Z",
+      "category": "Minor Suggestions",
+      "creation_time": "2025-06-22T21:22:16.974Z",
       "description": {
-        "content": " the email input on mount for faster login.",
+        "content": "You throw an error if env vars are missing. This is good for dev, but will crash the app in production if not set.\nMake sure your deployment always sets these variables.",
         "mime": "text/markdown"
       },
-      "id": "3",
+      "id": "16",
       "prio": 4,
       "references": [],
-      "title": "Auto-focus"
+      "title": "Environment Variable Error"
     }
   ]
 }
